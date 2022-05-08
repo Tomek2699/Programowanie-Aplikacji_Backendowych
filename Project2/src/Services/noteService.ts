@@ -52,6 +52,37 @@ export class NoteService {
         }
     }
 
-    
+    async GetByTag(tag:string)
+    {
+        let notes = await Note.find({ Tags: tag })
+        return notes
+    }
+
+    async GetByUserId(id:any, userId:any)
+    {
+        if(userId==id)
+        {
+            let notes = await Note.find({ UserId:id })
+            return notes
+        }
+        else
+        {
+            let notes = await Note.find({ UserId:id , Private: false})
+            return notes
+        }
+
+    }
+
+    async DeleteNote(id:any)
+    {
+        try
+        {
+            await Note.findByIdAndRemove(id)
+        }
+        catch(e)
+        {
+            throw e
+        }
+    }
 
 }
