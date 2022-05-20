@@ -19,7 +19,7 @@ router.post('/add',auth, async (req: Request, res: Response) => {
                                                         Content,
                                                         Private,
                                                         Tags);
-        res.status(200).send(`NoteId: ${noteId}`);
+        res.status(200).send(`ID: ${noteId}`);
     }
     catch(error)
     {
@@ -29,7 +29,7 @@ router.post('/add',auth, async (req: Request, res: Response) => {
 
 router.put('/edit/:id', async (req: Request, res: Response) => {
 
-    res.status(200).send("success");
+    res.status(200).send("Udało się edytować");
 })
 
 
@@ -42,18 +42,18 @@ router.delete('/delete/:id', auth, async (req: Request, res: Response) => {
         let note = await noteService.GetNoteById(id)
         if(!note)
         {
-            res.status(400).send("Note doesn`t exists.");
+            res.status(400).send("Nie znaleziono notaktki");
         }
         const userIdNote = note.UserId
         const userIdToken = req.headers.userId
         if(userIdNote == userIdToken)
         {
             noteService.DeleteNote(id)
-            res.status(200).send("Note has been deleted.");
+            res.status(200).send("Usunięto pomyślnie");
         }
         else
         {
-            res.status(400).send("Your are not the owner");
+            res.status(400).send("Nie jesteś właścicielem notatki");
         }
     }
     catch(e)
@@ -64,6 +64,15 @@ router.delete('/delete/:id', auth, async (req: Request, res: Response) => {
 router.get('/getall', async (req: Request, res: Response) => {
 
     let notes = await noteService.GetNotes()
+    res.status(200).send(notes);
+})
+
+router.get('/user/:id', auth, async (req: Request, res: Response) => {
+
+    const userId = req.headers.userId
+
+    const id:any = req.params.id
+    let notes = await noteService.GetByUserId(id, userId)
     res.status(200).send(notes);
 })
 
@@ -81,15 +90,5 @@ router.get('/tag/:tag', async (req: Request, res: Response) => {
     
     res.status(200).send(notes);
 })
-
-router.get('/user/:id', auth, async (req: Request, res: Response) => {
-
-    const userId = req.headers.userId
-
-    const id:any = req.params.id
-    let notes = await noteService.GetByUserId(id, userId)
-    res.status(200).send(notes);
-})
-
 
 module.exports = router;
