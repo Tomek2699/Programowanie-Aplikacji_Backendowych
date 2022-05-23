@@ -1,7 +1,8 @@
 import { ChangeStreamDocument } from "mongodb";
 import mongoose from "mongoose";
+const {ourCompanySchema, foreignCompanySchema, commoditySchema, invoiceSchema} = require('../DataBase/schemas')
 
-const connectionString = 'mongodb+srv://Tomasz:Klaudia0305!@cluster0.u4kcw.mongodb.net/?retryWrites=true&w=majority'
+const connectionString = 'mongodb+srv://tomek:hBJsSTMGYbtBfm36@cluster0.xrh3s.mongodb.net/projectinvoice?retryWrites=true&w=majority'
 
 export async function dbmain() {
     console.log('Connecting to mongo');
