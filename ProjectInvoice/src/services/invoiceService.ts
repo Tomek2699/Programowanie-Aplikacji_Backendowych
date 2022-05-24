@@ -40,4 +40,36 @@ export class InvoiceService
             throw error
         }
     }
+
+    async GetInvoiceById(invoiceId:any)
+    {
+        try
+        {
+            let invoice = await Invoice.findById(invoiceId)
+            return invoice
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
+    async GetByUserId(userId:any)
+    {
+        let invoices = await Invoice.find({ UserId:userId })
+        return invoices
+    }
+
+    async DeleteInvoice(id:any)
+    {
+        try
+        {
+            await Invoice.findByIdAndRemove(id)
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
 }

@@ -39,4 +39,23 @@ export class OurCompanyService
             throw error
         }
     }
+
+    async GetOurCompanyById(ourCompanyId:any)
+    {
+        try
+        {
+            let ourCompany = await OurCompany.findById(ourCompanyId)
+            return ourCompany
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
+    async GetByUserId(userId:any)
+    {
+        let ourCompanies = await OurCompany.find({ UserId:userId })
+        return ourCompanies
+    }
 }

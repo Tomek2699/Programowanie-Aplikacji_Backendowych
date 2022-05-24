@@ -31,5 +31,18 @@ router.get('/getAll', async (req: Request, res: Response) =>
     res.status(200).send(ourCompanies)
 })
 
+router.get('/getById/:ourCompanyId', async (req: Request, res: Response) =>
+{
+    let ourCompany = await ourCompanyService.GetOurCompanyById(req.params.ourCompanyId)
+    res.status(200).send(ourCompany)
+})
+
+router.get('/getByUserID/:userId', async (req: Request, res: Response) => {
+
+    const userId:any = req.params.userId
+    let ourCompanies = await ourCompanyService.GetByUserId(userId)
+    res.status(200).send(ourCompanies)
+})
+
 
 module.exports = router;

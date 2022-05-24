@@ -77,6 +77,18 @@ export class UserService {
         } catch {
         throw "Zaloguj się"
         }
+    }
 
+    async GetUsers()
+    {
+        try
+        {
+            let users = await User.find()
+            return users
+        }
+        catch(error)
+        {
+            throw error
+        }
     }
 }

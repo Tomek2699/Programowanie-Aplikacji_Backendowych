@@ -13,7 +13,7 @@ const router = express.Router();
 const app = express()
 app.use(express.json())
 
-const _userService = new UserService();
+const userService = new UserService();
 
 router.post('/register', async (req: Request, res: Response) => {
 
@@ -30,7 +30,7 @@ router.post('/register', async (req: Request, res: Response) => {
         if(existingUsername){
             throw "Użytkownik już istnieje!"
         }
-        let newUser = await _userService.AddUser(username, password)
+        let newUser = await userService.AddUser(username, password)
 
         res.status(200).send(newUser.id)
     }
@@ -49,7 +49,7 @@ router.post('/login', async (req: Request, res: Response) => {
             throw "Nie wszystkie pola zostały wypełnione!"
         }
         
-        let token = await _userService.LoginUser(username, password)
+        let token = await userService.LoginUser(username, password)
         res.cookie('accesstoken', token)
         res.status(200).send(token)
     }
@@ -70,7 +70,7 @@ router.delete('/delete',auth, async (req: Request, res: Response) => {
 
     try{
         let x = req.headers.userId
-        let deletedUser = await _userService.DeleteUser(x)
+        let deletedUser = await userService.DeleteUser(x)
         res.clearCookie("accesstoken").status(200).send(`Usunięto użytkownika o ID: ${deletedUser.id}`)
     }
     catch(error)
@@ -78,6 +78,12 @@ router.delete('/delete',auth, async (req: Request, res: Response) => {
         res.status(500).send(error);
     }
 
+})
+
+router.get('/getAll', async (req: Request, res: Response) =>
+{
+    let users = await userService.GetUsers()
+    res.status(200).send(users)
 })
 
 module.exports = router;

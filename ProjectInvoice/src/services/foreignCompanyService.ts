@@ -39,4 +39,24 @@ export class ForeignCompanyService
             throw error
         }
     }
+
+    async GetForeignCompanyById(foreignCompanyId:any)
+    {
+        try
+        {
+            let foreignCompany = await ForeignCompany.findById(foreignCompanyId)
+            return foreignCompany
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
+    async GetByUserId(userId:any)
+    {
+        let foreignCompanies = await ForeignCompany.find({ UserId:userId })
+        return foreignCompanies
+    }
+    
 }
