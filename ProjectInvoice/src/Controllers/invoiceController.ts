@@ -28,21 +28,36 @@ router.post('/addInvoice/:ourCompanyId/:foreignCompanyId', auth, async (req: Req
     }
 })
 
-router.get('/getAll', async (req: Request, res: Response) =>
+router.get('/getAll', auth, async (req: Request, res: Response) =>
 {
     let invoices = await invoiceService.GetInvoices()
     res.status(200).send(invoices)
 })
 
-router.get('/getById/:invoiceId', async (req: Request, res: Response) =>
+router.get('/getById/:invoiceId', auth, async (req: Request, res: Response) =>
 {
-    let invoice = await invoiceService.GetInvoiceById(req.params.invoiceId)
-    res.status(200).send(invoice)
+    try
+    {
+        let invoice = await invoiceService.GetInvoiceById(req.params.invoiceId)
+        if(!invoice)
+        {
+            res.status(400).send("Faktura nie istenieje!");
+        }
+        else
+        {
+            res.status(200).send(invoice)
+        }   
+    }
+    catch(error)
+    {
+        throw error
+    }
+
 })
 
-router.get('/getByUserID/:userId', async (req: Request, res: Response) => {
+router.get('/getByUserID', auth, async (req: Request, res: Response) => {
 
-    const userId:any = req.params.userId
+    const userId:any = req.headers.userId
     let invoices = await invoiceService.GetByUserId(userId)
     res.status(200).send(invoices)
 })
@@ -58,22 +73,35 @@ router.delete('/deleteInvoice/:id', auth, async (req: Request, res: Response) =>
         {
             res.status(400).send("Faktura nie istenieje!");
         }
-        const invoiceUserId = invoice.UserId
-        const tokenUserId = req.headers.userId
-        if(invoiceUserId == tokenUserId)
-        {
-            invoiceService.DeleteInvoice(id)
-            res.status(200).send("Udało Ci się usunąć fakturę");
-        }
         else
         {
-            res.status(400).send("Nie jesteś właścicielem faktury");
+            const invoiceUserId = invoice.UserId
+            const tokenUserId = req.headers.userId
+            if(invoiceUserId == tokenUserId)
+            {
+                invoiceService.DeleteInvoice(id)
+                res.status(200).send("Udało Ci się usunąć fakturę");
+            }
+            else
+            {
+                res.status(400).send("Nie jesteś właścicielem faktury");
+            }
         }
+        
     }
     catch(error)
     {
         throw error
     }
+})
+
+router.put('/editInvoice/:id', async (req: Request, res: Response) => {
+
+    const id:any = req.params.id
+    const {NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay, OurCompanyId, ForeignCompanyId} = req.body;
+    
+    await invoiceService.EditInvoice(id, OurCompanyId, ForeignCompanyId, NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay)
+    res.status(200).send("Udało Ci się edytować fakturę!");
 })
 
 module.exports = router;

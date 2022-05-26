@@ -69,8 +69,8 @@ router.get('/logout', auth, async (req:Request, res:Response) => {
 router.delete('/delete',auth, async (req: Request, res: Response) => {
 
     try{
-        let x = req.headers.userId
-        let deletedUser = await userService.DeleteUser(x)
+        let userId = req.headers.userId
+        let deletedUser = await userService.DeleteUser(userId)
         res.clearCookie("accesstoken").status(200).send(`Usunięto użytkownika o ID: ${deletedUser.id}`)
     }
     catch(error)

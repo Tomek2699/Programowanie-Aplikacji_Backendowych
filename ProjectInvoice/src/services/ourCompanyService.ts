@@ -9,7 +9,7 @@ export class OurCompanyService
         try
         {
             const newOurCompany = new OurCompany({
-                UserID:_userId,
+                OurCompanyUserId:_userId,
                 CompanyName: _name,
                 Address: _address,
                 NIP: _nip,
@@ -57,5 +57,17 @@ export class OurCompanyService
     {
         let ourCompanies = await OurCompany.find({ UserId:userId })
         return ourCompanies
+    }
+
+    async DeleteOurCompany(id:any)
+    {
+        try
+        {
+            await OurCompany.findByIdAndRemove(id)
+        }
+        catch(error)
+        {
+            throw error
+        }
     }
 }

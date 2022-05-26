@@ -9,7 +9,7 @@ export class InvoiceService
         try
         {
             const newInvoice = new Invoice({
-                UserID:_userId,
+                UserId:_userId,
                 NoInvoice: _noInvoice,
                 StartDate: _startDate,
                 FinishDateDelivery: _finishDateDelivery,
@@ -70,6 +70,49 @@ export class InvoiceService
         {
             throw error
         }
+    }
+
+    async EditInvoice(_idInvoice:any, _ourCompanyId:any, _foreignCompanyId:any, _noInvoice:string, _startDate:Date, _finishDateDelivery:Date, _paymentDate:Date, _paymentWay:string) 
+    {
+        try 
+        {
+            let invoice = await Invoice.findById(_idInvoice)
+            if(_noInvoice != null)
+            {
+                invoice.NoInvoice = _noInvoice
+            }
+            if(_startDate != null)
+            {
+                invoice.StartDate = _startDate
+            }
+            if(_finishDateDelivery != null)
+            {
+                invoice.FinishDateDelivery = _finishDateDelivery
+            }
+            if(_paymentDate != null)
+            {
+                invoice.PaymentDate = _paymentDate
+            }
+            if(_paymentWay != null)
+            {
+                invoice.PaymentWay = _paymentWay
+            }
+            if(_ourCompanyId != null)
+            {
+                invoice.OurCompany = _ourCompanyId
+            }
+            if(_foreignCompanyId != null)
+            {
+                invoice.ForeignCompany = _foreignCompanyId
+            }
+
+            await Invoice.findByIdAndUpdate(_idInvoice, invoice)
+            console.log(invoice)
+        } 
+        catch (error) {
+            throw error
+        }
+          
     }
 
 }

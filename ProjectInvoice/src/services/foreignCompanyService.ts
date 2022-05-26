@@ -9,7 +9,7 @@ export class ForeignCompanyService
         try
         {
             const newForeignCompany = new ForeignCompany({
-                UserID:_userId,
+                ForeignCompanyUserId:_userId,
                 CompanyName: _name,
                 Address: _address,
                 NIP: _nip,
@@ -57,6 +57,18 @@ export class ForeignCompanyService
     {
         let foreignCompanies = await ForeignCompany.find({ UserId:userId })
         return foreignCompanies
+    }
+
+    async DeleteForeignCompany(id:any)
+    {
+        try
+        {
+            await ForeignCompany.findByIdAndRemove(id)
+        }
+        catch(error)
+        {
+            throw error
+        }
     }
     
 }
