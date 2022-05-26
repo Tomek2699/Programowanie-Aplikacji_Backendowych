@@ -107,7 +107,6 @@ export class InvoiceService
             }
 
             await Invoice.findByIdAndUpdate(_idInvoice, invoice)
-            console.log(invoice)
         } 
         catch (error) {
             throw error

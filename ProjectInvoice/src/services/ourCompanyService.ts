@@ -70,4 +70,42 @@ export class OurCompanyService
             throw error
         }
     }
+
+    async EditOurCompany(_idOurCompany:any,  _name:string, _address:string, _nip:number, _phoneNumber:Number, _bankName:string, _bankAccountNumber:Number) 
+    {
+        try 
+        {
+            let ourCompany = await OurCompany.findById(_idOurCompany)
+            if(_name != null)
+            {
+                ourCompany.Name = _name
+            }
+            if(_address != null)
+            {
+                ourCompany.Address = _address
+            }
+            if(_nip != null)
+            {
+                ourCompany.NIP = _nip
+            }
+            if(_phoneNumber != null)
+            {
+                ourCompany.PhoneNumber = _phoneNumber
+            }
+            if(_bankName != null)
+            {
+                ourCompany.BankName = _bankName
+            }
+            if(_bankAccountNumber != null)
+            {
+                ourCompany.BankAccountNumber = _bankAccountNumber
+            }
+
+            await OurCompany.findByIdAndUpdate(_idOurCompany, ourCompany)
+        } 
+        catch (error) {
+            throw error
+        }
+          
+    }
 }

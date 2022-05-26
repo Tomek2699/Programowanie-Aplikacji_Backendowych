@@ -10,13 +10,13 @@ const auth = require("../Middleware/authentication")
 
 const foreignCompanyService = new ForeignCompanyService()
 
-router.post('/addForeignCompany', auth, async (req: Request, res: Response) => {
+router.post('/add', auth, async (req: Request, res: Response) => {
 
-    const {Name, Address, Nip, PhoneNumber, BankName, BankAccountNumber} = req.body;
+    const {CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber} = req.body;
     try
     {
         const userId = req.headers.userId
-        let invoiceId = await foreignCompanyService.AddForeignCompany(userId, Name, Address, Nip, PhoneNumber, BankName, BankAccountNumber);
+        let invoiceId = await foreignCompanyService.AddForeignCompany(userId, CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber);
         res.status(200).send(`Udało się dodać obcą firmę firmę o ID: ${invoiceId}`);
     }
     catch(error)
@@ -52,7 +52,7 @@ router.get('/getByUserID', auth, async (req: Request, res: Response) => {
     res.status(200).send(foreignCompanies)
 })
 
-router.delete('/deleteForeignCompany/:id', auth, async (req: Request, res: Response) => {
+router.delete('/delete/:id', auth, async (req: Request, res: Response) => {
     
     try
     {
@@ -83,6 +83,15 @@ router.delete('/deleteForeignCompany/:id', auth, async (req: Request, res: Respo
     {
         throw error
     }
+})
+
+router.put('/edit/:id', async (req: Request, res: Response) => {
+
+    const id:any = req.params.id
+    const {CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber} = req.body;
+    
+    await foreignCompanyService.EditForeignCompany(id, CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber)
+    res.status(200).send("Udało Ci się edytować obcą firmę!");
 })
 
 module.exports = router;

@@ -70,5 +70,43 @@ export class ForeignCompanyService
             throw error
         }
     }
+
+    async EditForeignCompany(_idForeignCompany:any,  _name:string, _address:string, _nip:number, _phoneNumber:Number, _bankName:string, _bankAccountNumber:Number) 
+    {
+        try 
+        {
+            let foreignCompany = await ForeignCompany.findById(_idForeignCompany)
+            if(_name != null)
+            {
+                foreignCompany.Name = _name
+            }
+            if(_address != null)
+            {
+                foreignCompany.Address = _address
+            }
+            if(_nip != null)
+            {
+                foreignCompany.NIP = _nip
+            }
+            if(_phoneNumber != null)
+            {
+                foreignCompany.PhoneNumber = _phoneNumber
+            }
+            if(_bankName != null)
+            {
+                foreignCompany.BankName = _bankName
+            }
+            if(_bankAccountNumber != null)
+            {
+                foreignCompany.BankAccountNumber = _bankAccountNumber
+            }
+
+            await OurCompany.findByIdAndUpdate(_idForeignCompany, foreignCompany)
+        } 
+        catch (error) {
+            throw error
+        }
+          
+    }
     
 }

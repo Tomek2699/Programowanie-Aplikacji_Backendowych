@@ -10,7 +10,7 @@ const auth = require("../Middleware/authentication")
 
 const invoiceService = new InvoiceService()
 
-router.post('/addInvoice/:ourCompanyId/:foreignCompanyId', auth, async (req: Request, res: Response) => 
+router.post('/add/:ourCompanyId/:foreignCompanyId', auth, async (req: Request, res: Response) => 
 {
 
     const {NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay} = req.body;
@@ -62,7 +62,7 @@ router.get('/getByUserID', auth, async (req: Request, res: Response) => {
     res.status(200).send(invoices)
 })
 
-router.delete('/deleteInvoice/:id', auth, async (req: Request, res: Response) => {
+router.delete('/delete/:id', auth, async (req: Request, res: Response) => {
     
     try
     {
@@ -95,7 +95,7 @@ router.delete('/deleteInvoice/:id', auth, async (req: Request, res: Response) =>
     }
 })
 
-router.put('/editInvoice/:id', async (req: Request, res: Response) => {
+router.put('/edit/:id', async (req: Request, res: Response) => {
 
     const id:any = req.params.id
     const {NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay, OurCompanyId, ForeignCompanyId} = req.body;
