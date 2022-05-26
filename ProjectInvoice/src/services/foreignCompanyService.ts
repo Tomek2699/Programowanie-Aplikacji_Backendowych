@@ -78,7 +78,7 @@ export class ForeignCompanyService
             let foreignCompany = await ForeignCompany.findById(_idForeignCompany)
             if(_name != null)
             {
-                foreignCompany.Name = _name
+                foreignCompany.CompanyName = _name
             }
             if(_address != null)
             {
@@ -101,7 +101,7 @@ export class ForeignCompanyService
                 foreignCompany.BankAccountNumber = _bankAccountNumber
             }
 
-            await OurCompany.findByIdAndUpdate(_idForeignCompany, foreignCompany)
+            await ForeignCompany.findByIdAndUpdate(_idForeignCompany, foreignCompany)
         } 
         catch (error) {
             throw error

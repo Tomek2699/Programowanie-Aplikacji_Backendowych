@@ -34,7 +34,7 @@ router.get('/getAll', auth, async (req: Request, res: Response) =>
     res.status(200).send(invoices)
 })
 
-router.get('/getById/:invoiceId', auth, async (req: Request, res: Response) =>
+router.get('/getByInvoiceId/:invoiceId', auth, async (req: Request, res: Response) =>
 {
     try
     {
@@ -60,6 +60,48 @@ router.get('/getByUserID', auth, async (req: Request, res: Response) => {
     const userId:any = req.headers.userId
     let invoices = await invoiceService.GetByUserId(userId)
     res.status(200).send(invoices)
+})
+
+router.get('/getByOurCompanyId/:ourCompanyId', auth, async (req: Request, res: Response) =>
+{
+    try
+    {
+        let invoice = await invoiceService.GetInvoicesByOurCompanyId(req.params.ourCompanyId)
+        if(!invoice)
+        {
+            res.status(400).send("Żadna faktura nie ma przypisanej tej firmy!");
+        }
+        else
+        {
+            res.status(200).send(invoice)
+        }   
+    }
+    catch(error)
+    {
+        throw error
+    }
+
+})
+
+router.get('/getByForeignCompanyId/:foreignCompanyId', auth, async (req: Request, res: Response) =>
+{
+    try
+    {
+        let invoice = await invoiceService.GetInvoicesByForeignCompanyId(req.params.foreignCompanyId)
+        if(!invoice)
+        {
+            res.status(400).send("Żadna faktura nie ma przypisanej tej firmy!");
+        }
+        else
+        {
+            res.status(200).send(invoice)
+        }   
+    }
+    catch(error)
+    {
+        throw error
+    }
+
 })
 
 router.delete('/delete/:id', auth, async (req: Request, res: Response) => {

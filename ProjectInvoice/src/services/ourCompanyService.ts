@@ -78,7 +78,7 @@ export class OurCompanyService
             let ourCompany = await OurCompany.findById(_idOurCompany)
             if(_name != null)
             {
-                ourCompany.Name = _name
+                ourCompany.CompanyName = _name
             }
             if(_address != null)
             {

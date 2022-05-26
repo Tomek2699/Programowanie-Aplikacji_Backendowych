@@ -54,6 +54,32 @@ export class InvoiceService
         }
     }
 
+    async GetInvoicesByOurCompanyId(ourCompanyId:any)
+    {
+        try
+        {
+            let invoice = await Invoice.find({OurCompany: ourCompanyId})
+            return invoice
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
+    async GetInvoicesByForeignCompanyId(foreignCompanyId:any)
+    {
+        try
+        {
+            let invoice = await Invoice.find({ForeignCompany: foreignCompanyId})
+            return invoice
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
+
     async GetByUserId(userId:any)
     {
         let invoices = await Invoice.find({ UserId:userId })
