@@ -137,13 +137,25 @@ router.delete('/delete/:id', auth, async (req: Request, res: Response) => {
     }
 })
 
-router.put('/edit/:id', async (req: Request, res: Response) => {
+router.put('/edit/:id', auth, async (req: Request, res: Response) => {
 
     const id:any = req.params.id
     const {NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay, OurCompanyId, ForeignCompanyId} = req.body;
     
     await invoiceService.EditInvoice(id, OurCompanyId, ForeignCompanyId, NoInvoice, StartDate, FinishDateDelivery, PaymentDate, PaymentWay)
     res.status(200).send("Udało Ci się edytować fakturę!");
+})
+
+router.get('/getInvoiceAndCompanies/:invoiceId', auth, async (req: Request, res: Response) => {
+    const invoiceId:any = req.params.invoiceId
+    let invoiceAndCompanies = await invoiceService.GetInvoiceDescription(invoiceId)
+    res.status(200).send(invoiceAndCompanies)
+})
+
+router.get('/getSumOfComodities/:invoiceId', auth, async (req: Request, res: Response) => {
+    const invoiceId:any = req.params.invoiceId
+    let invoiceCommoditiesSum = await invoiceService.GetSumOfCommodities(invoiceId)
+    res.status(200).send(invoiceCommoditiesSum)
 })
 
 module.exports = router;

@@ -73,7 +73,6 @@ export class UserService {
                 throw "Odmowa autoryzacji!"
             }
             console.log(verified.id)
-            return verified
         } catch {
         throw "Zaloguj się"
         }

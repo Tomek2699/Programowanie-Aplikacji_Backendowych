@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import { dbmain } from "../DataBase/DataBaseContext";
+import { CommoditiesSum } from "../Models/CommoditiesSum"
+import { InvoiceAndCompanies } from "../Models/InvoiceAndCompanies"
 const {OurCompany, ForeignCompany, Commodity, Invoice} = require('../DataBase/schemas')
+
 
 export class InvoiceService 
 {
@@ -138,6 +141,81 @@ export class InvoiceService
             throw error
         }
           
+    }
+
+    async GetInvoiceDescription(invoiceId:any)
+    {
+        let invoice = await Invoice.findById(invoiceId)
+        let ourCompany = await OurCompany.findById(invoice.OurCompany)
+        let foreignCompany = await ForeignCompany.findById(invoice.ForeignCompany)
+
+        const model = new InvoiceAndCompanies(
+            invoice.NoInvoice,
+            invoice.StartDate,
+            invoice.FinishDateDelivery,
+            invoice.PaymentDate,
+            invoice.PaymentWay,
+            "Własna firma",
+            ourCompany.CompanyName,
+            ourCompany.Address,
+            ourCompany.NIP,
+            ourCompany.PhoneNumber,
+            ourCompany.BankName,
+            ourCompany.BankAccountNumber,
+            "Obca firma",
+            foreignCompany.CompanyName,
+            foreignCompany.Address,
+            foreignCompany.NIP,
+            foreignCompany.PhoneNumber,
+            foreignCompany.BankName,
+            foreignCompany.BankAccountNumbeturn
+        )
+
+        return model
+    }
+
+    async GetSumOfCommodities(invoiceId:any)
+    {
+        let PriceNetto: Array<Number> = new Array<Number>()
+        let ValueNetto: Array<Number> = new Array<Number>()
+        let AmountBrutto: Array<Number> = new Array<Number>()
+        let sumPriceNetto: Number = 0
+        let sumValueNetto: Number = 0
+        let sumAmountBrutto: Number = 0
+        let invoice = await Invoice.findById(invoiceId)
+
+        invoice.Commodities.forEach((element: any) => {
+            PriceNetto.push(element.PriceNetto)
+        });
+
+        invoice.Commodities.forEach((element: any) => {
+            ValueNetto.push(element.ValueNetto)
+        });
+
+        invoice.Commodities.forEach((element: any) => {
+            AmountBrutto.push(element.AmountBrutto)
+        });
+
+        PriceNetto.forEach(x => {
+            sumPriceNetto = +sumPriceNetto + +x
+        })
+
+        ValueNetto.forEach(x => {
+            sumValueNetto = +sumValueNetto + +x
+        })
+
+        AmountBrutto.forEach(x => {
+            sumAmountBrutto = +sumAmountBrutto + +x
+        })
+
+        const model = new CommoditiesSum(
+            sumPriceNetto,
+            sumValueNetto,
+            sumAmountBrutto
+        )
+
+        return model
+
     }
 
 }

@@ -51,7 +51,7 @@ router.post('/login', async (req: Request, res: Response) => {
         
         let token = await userService.LoginUser(username, password)
         res.cookie('accesstoken', token)
-        res.status(200).send(token)
+        res.status(200).send("Udało się zalogować :D")
     }
     catch(error)
     {
