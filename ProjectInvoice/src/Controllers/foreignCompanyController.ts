@@ -28,7 +28,8 @@ router.post('/add', auth, async (req: Request, res: Response) => {
 
 router.get('/getAll', auth, async (req: Request, res: Response) =>
 {
-    let foreignCompanies = await foreignCompanyService.GetForeignCompanies()
+    const UserId = req.headers.userId
+    let foreignCompanies = await foreignCompanyService.GetForeignCompanies(UserId)
     res.status(200).send(foreignCompanies)
 })
 
@@ -41,7 +42,16 @@ router.get('/getById/:foreignCompanyId', auth, async (req: Request, res: Respons
     }
     else
     {
-        res.status(200).send(foreignCompany)
+        const invoiceUserId = foreignCompany.UserId
+        const tokenUserId = req.headers.userId
+        if(invoiceUserId == tokenUserId)
+        {
+            res.status(200).send(foreignCompany)
+        }
+        else
+        {
+            res.status(400).send("Nie jesteś właścicielem faktury");
+        }
     }  
 })
 

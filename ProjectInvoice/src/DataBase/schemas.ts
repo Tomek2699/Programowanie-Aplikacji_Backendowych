@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ourCompanySchema = new mongoose.Schema({
-    OurCompanyUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+    UserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
     CompanyName: {type: String},
     Address: {type: String},
     NIP: {type: Number},
@@ -12,7 +12,7 @@ const ourCompanySchema = new mongoose.Schema({
 
 
 const foreignCompanySchema = new mongoose.Schema({
-    ForeignCompanyUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+    UserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
     CompanyName: {type: String},
     Address: {type: String},
     NIP: {type: Number},
@@ -22,7 +22,7 @@ const foreignCompanySchema = new mongoose.Schema({
 })
 
 const commoditySchema = new mongoose.Schema({
-    CommodityUserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+    UserId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
     Name: {type: String},
     Amount: {type: Number},
     Unit: {type: String},

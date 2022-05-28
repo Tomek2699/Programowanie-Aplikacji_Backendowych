@@ -9,7 +9,7 @@ export class OurCompanyService
         try
         {
             const newOurCompany = new OurCompany({
-                OurCompanyUserId:_userId,
+                UserId: _userId,
                 CompanyName: _name,
                 Address: _address,
                 NIP: _nip,
@@ -27,11 +27,11 @@ export class OurCompanyService
         }
     }
 
-    async GetOurCompanies()
+    async GetOurCompanies(UserId:any)
     {
         try
         {
-            let ourCompanies = await OurCompany.find()
+            let ourCompanies = await OurCompany.find({UserId: UserId})
             return ourCompanies
         }
         catch(error)

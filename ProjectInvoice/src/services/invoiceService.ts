@@ -31,11 +31,11 @@ export class InvoiceService
         }
     }
 
-    async GetInvoices()
+    async GetInvoices(UserId:any)
     {
         try
         {
-            let invoices = await Invoice.find()
+            let invoices = await Invoice.find({UserId: UserId})
             return invoices
         }
         catch(error)

@@ -16,8 +16,8 @@ router.post('/add', auth, async (req: Request, res: Response) => {
     try
     {
         const userId = req.headers.userId
-        let invoiceId = await ourCompanyService.AddOurCompany(userId, CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber);
-        res.status(200).send(`Udało się dodać swoją firmę o ID: ${invoiceId}`);
+        let ourCompanyId = await ourCompanyService.AddOurCompany(userId, CompanyName, Address, Nip, PhoneNumber, BankName, BankAccountNumber);
+        res.status(200).send(`Udało się dodać swoją firmę o ID: ${ourCompanyId}`);
     }
     catch(error)
     {
@@ -27,7 +27,8 @@ router.post('/add', auth, async (req: Request, res: Response) => {
 
 router.get('/getAll', auth, async (req: Request, res: Response) =>
 {
-    let ourCompanies = await ourCompanyService.GetOurCompanies()
+    const UserId = req.headers.userId
+    let ourCompanies = await ourCompanyService.GetOurCompanies(UserId)
     res.status(200).send(ourCompanies)
 })
 
@@ -40,7 +41,16 @@ router.get('/getById/:ourCompanyId', auth, async (req: Request, res: Response) =
     }
     else
     {
-        res.status(200).send(ourCompany)
+        const invoiceUserId = ourCompany.UserId
+        const tokenUserId = req.headers.userId
+        if(invoiceUserId == tokenUserId)
+        {
+            res.status(200).send(ourCompany)
+        }
+        else
+        {
+            res.status(400).send("Nie jesteś właścicielem faktury");
+        }
     }
     
 })

@@ -9,7 +9,7 @@ export class ForeignCompanyService
         try
         {
             const newForeignCompany = new ForeignCompany({
-                ForeignCompanyUserId:_userId,
+                UserId:_userId,
                 CompanyName: _name,
                 Address: _address,
                 NIP: _nip,
@@ -27,11 +27,11 @@ export class ForeignCompanyService
         }
     }
 
-    async GetForeignCompanies()
+    async GetForeignCompanies(UserId:any)
     {
         try
         {
-            let foreignCompanies = await ForeignCompany.find()
+            let foreignCompanies = await ForeignCompany.find({UserId: UserId})
             return foreignCompanies
         }
         catch(error)
