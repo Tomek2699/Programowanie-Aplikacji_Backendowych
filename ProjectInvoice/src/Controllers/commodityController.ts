@@ -36,9 +36,18 @@ router.get('/getAll/:invoiceId', auth, async (req: Request, res: Response) =>
 
 router.delete('/delete/:commodityId', auth, async (req: Request, res: Response) =>
 {
-    const commodityId = req.params.invoiceId
-    await commodityService.DeleteCommodity(commodityId)
-    res.status(200).send("Udało Ci się usunąć towar :D")
+    try 
+    {
+        const commodityId:any = req.params.commodityId
+        const userId:any = req.headers.userId
+        
+        await commodityService.DeleteCommodity(commodityId, userId)
+        res.status(200).send("Udało Ci się usunąć towar :D")
+    } 
+    catch (error) 
+    {
+        res.status(400).send(error)
+    }
 })
 
 module.exports = router

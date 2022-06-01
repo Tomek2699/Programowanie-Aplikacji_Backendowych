@@ -44,8 +44,22 @@ export class CommodityService
         }
     }
 
-    async DeleteCommodity(commodityId:any)
+    async DeleteCommodity(commodityId:any, userId:string)
     {
-       await Invoice.Commodities.pull({_id: commodityId}).save()
+        try {
+            await Invoice.collection.updateMany({}, {
+                $pull: {
+                    Commodity: {
+                        '_id': commodityId,
+                        'UserId': userId
+                    }
+                }
+            })
+            console.log(commodityId, userId)
+        } 
+        catch (error) 
+        {
+            throw error
+        }
     }
 }
